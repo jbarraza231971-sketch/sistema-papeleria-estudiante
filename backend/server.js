@@ -1,0 +1,28 @@
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');
+require('dotenv').config();
+const authRoutes = require('./routes/auth');
+const productsRoutes = require('./routes/products');
+const inventoryRoutes = require('./routes/inventory');
+const salesRoutes = require('./routes/sales');
+const usersRoutes = require('./routes/users');
+const settingsRoutes = require('./routes/settings');
+const { errorHandler } = require('./middleware/errorHandler');
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../frontend')));
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/sales', salesRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use(errorHandler);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+});
